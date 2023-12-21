@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  app:
+    build: 
+      context: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    image: ${IMAGE_NAME:-dev-dev}:${IMAGE_TAG:-latest}
+    volumes:
+      - ./workspace:/workspace # 工作区备份
