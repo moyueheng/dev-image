@@ -12,3 +12,6 @@ deploy:
 
 down:
 	docker-compose down
+
+push:
+	docker-compose push
