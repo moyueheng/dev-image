@@ -8,6 +8,6 @@ services:
       - "8080:8080"
     env_file:
       - .env
-    image: ${HUB_URL}${USER_NAME:-moyueheng}/${IMAGE_NAME:-dev-cuda12.2}:${IMAGE_TAG:-latest}
+    image: ${HUB_URL}${USER_NAME:-moyueheng}/${IMAGE_NAME:-dev-cuda11.2}:${IMAGE_TAG:-latest}
     volumes:
       - ./workspace:/workspace # 工作区备份
