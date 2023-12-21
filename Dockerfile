@@ -33,7 +33,11 @@ RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://
 ## 配置文件
 COPY config.yaml /root/.config/code-server/config.yaml
 ## 安装插件
-ARG PLUGIN_LIST="ms-python.python charliermarsh.ruff mhutchie.git-graph eamodio.gitlens ms-toolsai.jupyter cweijan.vscode-mysql-client2 anwar.papyrus-pdf njzy.stats-bar"
+ARG PLUGIN_LIST="ms-python.python charliermarsh.ruff \
+    mhutchie.git-graph eamodio.gitlens \
+    ms-toolsai.jupyter ms-toolsai.jupyter-keymap ms-toolsai.vscode-jupyter-cell-tags ms-toolsai.jupyter-renderers ms-toolsai.vscode-jupyter-slideshow \
+    cweijan.vscode-mysql-client2 anwar.papyrus-pdf njzy.stats-bar"
+
 ###  设置环境变量，以便在构建过程中使用
 ENV PLUGIN_LIST=${PLUGIN_LIST}
 RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" && \
