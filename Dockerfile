@@ -1,6 +1,6 @@
 
 # 使用官方cuda的Ubuntu作为基础镜像, 这个cuda版本要小于等于nvidia-smi
-FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04
+FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04
 
 
 # 避免在安装时出现交互式提示
@@ -21,8 +21,6 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
     software-properties-common \
     apt-transport-https \
     build-essential \
-    g++ \
-    gcc \
     && rm -rf /var/lib/apt/lists/*
 
 # 配置tmux
