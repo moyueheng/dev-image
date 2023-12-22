@@ -20,6 +20,9 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
     vim \
     software-properties-common \
     apt-transport-https \
+    build-essential \
+    g++ \
+    gcc \
     && rm -rf /var/lib/apt/lists/*
 
 # 配置tmux
