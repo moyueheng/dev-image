@@ -70,6 +70,3 @@ WORKDIR /workspace
 
 # 运行code-server
 ENTRYPOINT ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "password"]
-
-# 可以选择启动一个shell
-CMD [ "zsh" ]
