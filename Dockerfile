@@ -1,6 +1,6 @@
 
 # 使用官方cuda的Ubuntu作为基础镜像, 这个cuda版本要小于等于nvidia-smi
-FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04
+FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04
 
 
 # 避免在安装时出现交互式提示
@@ -56,11 +56,19 @@ RUN chsh -s $(which zsh) \
     && sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="ys"/' /root/.zshrc \
     && sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /root/.zshrc
 
+# 修改默认的 shell 为 zsh
+SHELL ["/bin/zsh", "-c"]
+
+
 # 安装Miniconda, zsh配置完了才能配置conda
 RUN wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.10.0-1-Linux-x86_64.sh -O /tmp/miniconda.sh \
     && bash /tmp/miniconda.sh -b -p /opt/conda \
     && rm /tmp/miniconda.sh \
-    && /opt/conda/bin/conda init zsh
+    && /opt/conda/bin/conda init zsh \
+    && source ~/.zshrc \
+    && pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+    && pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn \
+    && pip install pycuda
 
 # 暴露code-server的端口
 EXPOSE 8080
@@ -70,6 +78,3 @@ WORKDIR /workspace
 
 # 运行code-server
 ENTRYPOINT ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "password"]
-
-# 可以选择启动一个shell
-CMD [ "zsh" ]
