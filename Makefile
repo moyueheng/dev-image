@@ -3,7 +3,11 @@
 # -----------------------------------------------------------------------------
 .PHONY: all clean test install run deploy down
 
-all: clean test install run deploy down
+all: clean test install run deploy push
+
+build: 
+	bash ./update_tag.sh
+	docker-compose build
 
 deploy: 
 	bash ./update_tag.sh

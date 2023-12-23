@@ -1,6 +1,7 @@
 
 # 使用官方cuda的Ubuntu作为基础镜像, 这个cuda版本要小于等于nvidia-smi
-FROM nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu20.04
+FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04
+
 
 
 # 避免在安装时出现交互式提示
@@ -20,6 +21,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
     vim \
     software-properties-common \
     apt-transport-https \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # 配置tmux
@@ -36,7 +38,11 @@ COPY config.yaml /root/.config/code-server/config.yaml
 ARG PLUGIN_LIST="ms-python.python charliermarsh.ruff \
     mhutchie.git-graph eamodio.gitlens \
     ms-toolsai.jupyter ms-toolsai.jupyter-keymap ms-toolsai.vscode-jupyter-cell-tags ms-toolsai.jupyter-renderers ms-toolsai.vscode-jupyter-slideshow \
+    PKief.material-icon-theme Catppuccin.catppuccin-vsc \
     cweijan.vscode-mysql-client2 anwar.papyrus-pdf njzy.stats-bar"
+## 用户配置
+COPY  root/.local/share/code-server/User/settings.json
+
 
 ###  设置环境变量，以便在构建过程中使用
 ENV PLUGIN_LIST=${PLUGIN_LIST}
@@ -53,13 +59,23 @@ RUN export http_proxy="http://101.43.1.213:20171" \
 ##  改变zsh配置
 RUN chsh -s $(which zsh) \
     && sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="ys"/' /root/.zshrc \
-    && sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /root/.zshrc
+    && sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /root/.zshrc \
+    && echo "alias cs=code-server" >> /root/.zshrc
+
+# 修改默认的 shell 为 zsh
+SHELL ["/bin/zsh", "-c"]
+
 
 # 安装Miniconda, zsh配置完了才能配置conda
 RUN wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.10.0-1-Linux-x86_64.sh -O /tmp/miniconda.sh \
     && bash /tmp/miniconda.sh -b -p /opt/conda \
     && rm /tmp/miniconda.sh \
-    && /opt/conda/bin/conda init zsh
+    && /opt/conda/bin/conda init zsh \
+    && source ~/.zshrc \
+    && pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+    && pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn \
+    && pip install numpy \
+    && pip install pycuda
 
 # 暴露code-server的端口
 EXPOSE 8080
@@ -69,6 +85,3 @@ WORKDIR /workspace
 
 # 运行code-server
 ENTRYPOINT ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "password"]
-
-# 可以选择启动一个shell
-CMD [ "zsh" ]
