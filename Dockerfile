@@ -56,12 +56,19 @@ RUN chsh -s $(which zsh) \
     && sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="ys"/' /root/.zshrc \
     && sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /root/.zshrc
 
+# 修改默认的 shell 为 zsh
+SHELL ["/bin/zsh", "-c"]
+
 # 安装Miniconda, zsh配置完了才能配置conda
 RUN wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.10.0-1-Linux-x86_64.sh -O /tmp/miniconda.sh \
     && bash /tmp/miniconda.sh -b -p /opt/conda \
     && rm /tmp/miniconda.sh \
-    && /opt/conda/bin/conda init zsh
-
+    && /opt/conda/bin/conda init zsh \
+    && source ~/.zshrc \
+    && pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+    && pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn \
+    && pip install pycuda
+    
 # 暴露code-server的端口
 EXPOSE 8080
 
