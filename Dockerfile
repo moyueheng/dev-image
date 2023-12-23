@@ -41,7 +41,7 @@ ARG PLUGIN_LIST="ms-python.python charliermarsh.ruff \
     PKief.material-icon-theme Catppuccin.catppuccin-vsc \
     cweijan.vscode-mysql-client2 anwar.papyrus-pdf njzy.stats-bar"
 ## 用户配置
-COPY  root/.local/share/code-server/User/settings.json
+COPY code-server/settings.json root/.local/share/code-server/User/settings.json
 
 
 ###  设置环境变量，以便在构建过程中使用
