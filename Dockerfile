@@ -68,6 +68,7 @@ RUN wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39
     && source ~/.zshrc \
     && pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
     && pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn \
+    && pip install numpy \
     && pip install pycuda
 
 # 暴露code-server的端口
