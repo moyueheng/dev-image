@@ -1,0 +1,6 @@
+{
+    "git.autofetch": true,
+    "workbench.colorTheme": "Catppuccin Mocha",
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.iconTheme": "material-icon-theme"
+}

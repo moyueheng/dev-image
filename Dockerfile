@@ -37,7 +37,11 @@ COPY config.yaml /root/.config/code-server/config.yaml
 ARG PLUGIN_LIST="ms-python.python charliermarsh.ruff \
     mhutchie.git-graph eamodio.gitlens \
     ms-toolsai.jupyter ms-toolsai.jupyter-keymap ms-toolsai.vscode-jupyter-cell-tags ms-toolsai.jupyter-renderers ms-toolsai.vscode-jupyter-slideshow \
+    PKief.material-icon-theme Catppuccin.catppuccin-vsc \
     cweijan.vscode-mysql-client2 anwar.papyrus-pdf njzy.stats-bar"
+## 用户配置
+COPY  root/.local/share/code-server/User/settings.json
+
 
 ###  设置环境变量，以便在构建过程中使用
 ENV PLUGIN_LIST=${PLUGIN_LIST}
@@ -54,7 +58,8 @@ RUN export http_proxy="http://101.43.1.213:20171" \
 ##  改变zsh配置
 RUN chsh -s $(which zsh) \
     && sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="ys"/' /root/.zshrc \
-    && sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /root/.zshrc
+    && sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /root/.zshrc \
+    && echo "alias cs=code-server" >> /root/.zshrc
 
 # 修改默认的 shell 为 zsh
 SHELL ["/bin/zsh", "-c"]
