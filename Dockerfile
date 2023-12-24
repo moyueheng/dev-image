@@ -1,6 +1,6 @@
 
 # 使用官方cuda的Ubuntu作为基础镜像, 这个cuda版本要小于等于nvidia-smi
-FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04
+FROM ubuntu:22.04
 
 
 
@@ -11,8 +11,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 COPY sources.list /etc/apt/sources.list
 
 # 更新软件包列表，安装依赖
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
-    && apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
     wget \
     curl \
     git \
@@ -28,8 +27,8 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
 COPY .tmux.conf /root/.tmux.conf
 
 # 安装code-server
-RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" \
-    && curl -fsSL https://raw.githubusercontent.com/cdr/code-server/main/install.sh | sh \
+# 如果在国内设置该代理： export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" \
+RUN curl -fsSL https://raw.githubusercontent.com/cdr/code-server/main/install.sh | sh \
     && mkdir -p /root/.config/code-server
 
 ## 配置文件
@@ -46,13 +45,10 @@ COPY code-server/settings.json root/.local/share/code-server/User/settings.json
 
 ###  设置环境变量，以便在构建过程中使用
 ENV PLUGIN_LIST=${PLUGIN_LIST}
-RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" && \
-    for plugin in $PLUGIN_LIST; do code-server --install-extension $plugin; done
+RUN for plugin in $PLUGIN_LIST; do code-server --install-extension $plugin; done
 
 # 安装Oh-My-Zsh和插件
-RUN export http_proxy="http://101.43.1.213:20171" \
-    && export https_proxy="http://101.43.1.213:20171" \
-    && sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" \
+RUN sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" \
     && git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
@@ -73,9 +69,7 @@ RUN wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39
     && /opt/conda/bin/conda init zsh \
     && source ~/.zshrc \
     && pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
-    && pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn \
-    && pip install numpy \
-    && pip install pycuda
+    && pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn 
 
 # 暴露code-server的端口
 EXPOSE 8080
