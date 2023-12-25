@@ -7,7 +7,7 @@ FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 # 复制本地的sources.list文件到容器中
-COPY sources.list /etc/apt/sources.list
+COPY os/sources.list /etc/apt/sources.list
 
 # 更新软件包列表，安装依赖
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
@@ -24,7 +24,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
     && rm -rf /var/lib/apt/lists/*
 
 # 配置tmux
-COPY .tmux.conf /root/.tmux.conf
+COPY tmux/.tmux.conf /root/.tmux.conf
 
 # 安装code-server
 RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" \
@@ -32,21 +32,11 @@ RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://
     && mkdir -p /root/.config/code-server
 
 ## 配置文件
-COPY config.yaml /root/.config/code-server/config.yaml
-## 安装插件
-ARG PLUGIN_LIST="ms-python.python charliermarsh.ruff \
-    mhutchie.git-graph eamodio.gitlens \
-    ms-toolsai.jupyter ms-toolsai.jupyter-keymap ms-toolsai.vscode-jupyter-cell-tags ms-toolsai.jupyter-renderers ms-toolsai.vscode-jupyter-slideshow \
-    PKief.material-icon-theme Catppuccin.catppuccin-vsc \
-    Codeium.codeium \
-    cweijan.vscode-mysql-client2 anwar.papyrus-pdf njzy.stats-bar"
+COPY code-server/config.yaml /root/.config/code-server/config.yaml
 
+COPY code-server/plugin_install.sh /workspace/
+RUN sh /workspace/plugin_install.sh
 COPY code-server/settings.json root/.local/share/code-server/User/settings.json
-
-###  设置环境变量，以便在构建过程中使用
-ENV PLUGIN_LIST=${PLUGIN_LIST}
-RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" && \
-    for plugin in $PLUGIN_LIST; do code-server --install-extension $plugin; done
 
 # 安装Oh-My-Zsh和插件
 RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" \
