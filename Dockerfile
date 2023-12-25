@@ -23,6 +23,9 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
     apt-transport-https \
     && rm -rf /var/lib/apt/lists/*
 
+# 修改默认的 shell 为 zsh
+SHELL ["/bin/zsh", "-c"]
+
 # 配置tmux
 COPY tmux/.tmux.conf /root/.tmux.conf
 
@@ -35,7 +38,7 @@ RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://
 COPY code-server/config.yaml /root/.config/code-server/config.yaml
 
 COPY code-server/plugin_install.sh /workspace/
-RUN sh /workspace/plugin_install.sh
+RUN zsh /workspace/plugin_install.sh
 COPY code-server/settings.json root/.local/share/code-server/User/settings.json
 
 # 安装Oh-My-Zsh和插件
@@ -47,10 +50,9 @@ RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://
 ##  改变zsh配置
 RUN chsh -s $(which zsh) \
     && sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="ys"/' /root/.zshrc \
-    && sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /root/.zshrc
+    && sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /root/.zshrc \
+    && echo "alias cs=code-server" >> /root/.zshrc
 
-# 修改默认的 shell 为 zsh
-SHELL ["/bin/zsh", "-c"]
 
 # 安装Miniconda, zsh配置完了才能配置conda
 RUN wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.10.0-1-Linux-x86_64.sh -O /tmp/miniconda.sh \
