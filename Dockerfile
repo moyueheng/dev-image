@@ -38,6 +38,7 @@ ARG PLUGIN_LIST="ms-python.python charliermarsh.ruff \
     mhutchie.git-graph eamodio.gitlens \
     ms-toolsai.jupyter ms-toolsai.jupyter-keymap ms-toolsai.vscode-jupyter-cell-tags ms-toolsai.jupyter-renderers ms-toolsai.vscode-jupyter-slideshow \
     PKief.material-icon-theme Catppuccin.catppuccin-vsc \
+    Codeium.codeium \
     cweijan.vscode-mysql-client2 anwar.papyrus-pdf njzy.stats-bar"
 
 COPY code-server/settings.json root/.local/share/code-server/User/settings.json
