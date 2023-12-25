@@ -37,7 +37,10 @@ COPY config.yaml /root/.config/code-server/config.yaml
 ARG PLUGIN_LIST="ms-python.python charliermarsh.ruff \
     mhutchie.git-graph eamodio.gitlens \
     ms-toolsai.jupyter ms-toolsai.jupyter-keymap ms-toolsai.vscode-jupyter-cell-tags ms-toolsai.jupyter-renderers ms-toolsai.vscode-jupyter-slideshow \
+    PKief.material-icon-theme Catppuccin.catppuccin-vsc \
     cweijan.vscode-mysql-client2 anwar.papyrus-pdf njzy.stats-bar"
+
+COPY code-server/settings.json root/.local/share/code-server/User/settings.json
 
 ###  设置环境变量，以便在构建过程中使用
 ENV PLUGIN_LIST=${PLUGIN_LIST}
@@ -45,8 +48,7 @@ RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://
     for plugin in $PLUGIN_LIST; do code-server --install-extension $plugin; done
 
 # 安装Oh-My-Zsh和插件
-RUN export http_proxy="http://101.43.1.213:20171" \
-    && export https_proxy="http://101.43.1.213:20171" \
+RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" \
     && sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" \
     && git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
