@@ -5,6 +5,7 @@ PLUGIN_LIST=(
     # python
     "ms-python.python"
     "charliermarsh.ruff"
+    "njpwerner.autodocstring"
     # git
     "mhutchie.git-graph"
     "eamodio.gitlens"
