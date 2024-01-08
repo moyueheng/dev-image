@@ -1,6 +1,11 @@
 {
     "git.autofetch": true,
     "workbench.colorTheme": "Catppuccin Mocha",
-    "security.workspace.trust.untrustedFiles": "open",
-    "workbench.iconTheme": "material-icon-theme"
+    "workbench.iconTheme": "material-icon-theme",
+    "remote.autoForwardPortsSource": "hybrid",
+    "git.confirmSync": false,
+    "python.languageServer": "Pylance",
+    "python.analysis.exclude": [
+        "**/data"
+    ]
 }
