@@ -1,4 +1,7 @@
 {
+    "editor.tokenColorCustomizations": {
+        "comments": "#B4009E" // 选择你喜欢的颜色代码
+    },
     "git.autofetch": true,
     "git.confirmSync": false,
     "python.analysis.autoImportCompletions": false,
