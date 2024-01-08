@@ -1,11 +1,12 @@
 {
     "git.autofetch": true,
-    "workbench.colorTheme": "Catppuccin Mocha",
-    "workbench.iconTheme": "material-icon-theme",
-    "remote.autoForwardPortsSource": "hybrid",
     "git.confirmSync": false,
-    "python.languageServer": "Pylance",
+    "python.analysis.autoImportCompletions": false,
     "python.analysis.exclude": [
         "**/data"
-    ]
+    ],
+    "python.languageServer": "Pylance",
+    "remote.autoForwardPortsSource": "hybrid",
+    "workbench.colorTheme": "Catppuccin Mocha",
+    "workbench.iconTheme": "material-icon-theme"
 }
