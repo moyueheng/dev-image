@@ -27,6 +27,7 @@ PLUGIN_LIST=(
     "anwar.papyrus-pdf"
     "njzy.stats-bar"
     "richie5um2.vscode-sort-json"
+    "Gruntfuggly.todo-tree"
 )
 
 # 设置代理环境变量
