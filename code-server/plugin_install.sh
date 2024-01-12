@@ -5,6 +5,7 @@ PLUGIN_LIST=(
     # python
     "ms-python.python"
     "charliermarsh.ruff"
+    "njpwerner.autodocstring"
     # git
     "mhutchie.git-graph"
     "eamodio.gitlens"
@@ -25,6 +26,8 @@ PLUGIN_LIST=(
     # 其他
     "anwar.papyrus-pdf"
     "njzy.stats-bar"
+    "richie5um2.vscode-sort-json"
+    "Gruntfuggly.todo-tree"
 )
 
 # 设置代理环境变量
