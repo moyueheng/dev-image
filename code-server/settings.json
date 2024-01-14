@@ -8,7 +8,7 @@
     "python.analysis.exclude": [
         "**/data"
     ],
-    "python.languageServer": "Pylance",
+    // "python.languageServer": "Pylance", 不能填写这个，不如python插件用不了！！！！
     "remote.autoForwardPortsSource": "hybrid",
     "workbench.colorTheme": "Catppuccin Mocha",
     "workbench.iconTheme": "material-icon-theme"

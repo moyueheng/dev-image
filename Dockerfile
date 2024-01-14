@@ -23,12 +23,8 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
     apt-transport-https \
     && rm -rf /var/lib/apt/lists/*
 
-# 修改默认的 shell 为 zsh
-SHELL ["/bin/zsh", "-c"]
 
-# 配置tmux
-COPY tmux/.tmux.conf /root/.tmux.conf
-
+##########################code-server##########################
 # 安装code-server
 RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" \
     && curl -fsSL https://raw.githubusercontent.com/cdr/code-server/main/install.sh | sh \
@@ -37,9 +33,19 @@ RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://
 ## 配置文件
 COPY code-server/config.yaml /root/.config/code-server/config.yaml
 
+## 插件安装
 COPY code-server/plugin_install.sh /workspace/
 RUN zsh /workspace/plugin_install.sh
 COPY code-server/settings.json root/.local/share/code-server/User/settings.json
+##########################code-server##########################
+
+# 修改默认的 shell 为 zsh
+SHELL ["/bin/zsh", "-c"]
+
+
+# 配置tmux
+COPY tmux/.tmux.conf /root/.tmux.conf
+
 
 # 安装Oh-My-Zsh和插件
 RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" \
@@ -64,7 +70,7 @@ RUN wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39
     && pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn \
     && pip install numpy \
     && pip install pycuda
-    
+
 # 暴露code-server的端口
 EXPOSE 8080
 

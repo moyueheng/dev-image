@@ -19,7 +19,7 @@ PLUGIN_LIST=(
     "PKief.material-icon-theme"
     "Catppuccin.catppuccin-vsc"
     # AI写代码
-    "Codeium.codeium"
+    # "Codeium.codeium"
     # 数据库连接工具
     "cweijan.dbclient-jdbc"
     "cweijan.vscode-mysql-client2"
