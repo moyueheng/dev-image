@@ -38,7 +38,7 @@ COPY code-server/config.yaml /root/.config/code-server/config.yaml
 ## 插件安装
 COPY code-server/plugin_install.sh /workspace/
 RUN zsh /workspace/plugin_install.sh
-# COPY code-server/settings.json root/.local/share/code-server/User/settings.json # 不要进行提前配置容易出问题
+COPY code-server/settings.json root/.local/share/code-server/User/settings.json
 ##########################code-server##########################
 
 # 修改默认的 shell 为 zsh
