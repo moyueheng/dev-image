@@ -11,3 +11,4 @@ services:
     image: ${HUB_URL}${USER_NAME:-moyueheng}/${IMAGE_NAME:-codeserver-cuda12.2}:${IMAGE_TAG:-latest}
     volumes:
       - ./workspace:/workspace # 工作区备份
+      - ./code-server/settings.json:/root/.local/share/code-server/User/settings.json # 工作区备份
