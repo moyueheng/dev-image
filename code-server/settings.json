@@ -3,13 +3,6 @@
         "comments": "#B4009E" // 选择你喜欢的颜色代码
     },
     "git.autofetch": true,
-    "git.confirmSync": false,
-    "python.analysis.autoImportCompletions": false,
-    "python.analysis.exclude": [
-        "**/data"
-    ],
-    // "python.languageServer": "Pylance", 不能填写这个，不如python插件用不了！！！！
-    "remote.autoForwardPortsSource": "hybrid",
     "workbench.colorTheme": "Catppuccin Mocha",
     "workbench.iconTheme": "material-icon-theme"
 }
