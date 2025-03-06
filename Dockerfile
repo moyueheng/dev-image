@@ -8,8 +8,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 COPY sources.list /etc/apt/sources.list
 
 # 更新软件包列表，安装依赖
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
-    && apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
     wget \
     curl \
     git \
