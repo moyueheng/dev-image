@@ -1,6 +1,6 @@
 
 # 使用官方cuda的Ubuntu作为基础镜像, 这个cuda版本要小于等于nvidia-smi
-FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04
+FROM docker.io/whatcanyousee/verl:ngc-cu124-vllm0.8.4-sglang0.4.5-mcore0.12.0-te2.2
 
 
 
