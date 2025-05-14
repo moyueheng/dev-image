@@ -32,20 +32,10 @@ RUN export http_proxy="http://10.65.230.19:8301" && export https_proxy="http://1
 
 ## 配置文件
 COPY config.yaml /root/.config/code-server/config.yaml
-## 安装插件
-ARG PLUGIN_LIST="ms-python.python charliermarsh.ruff \
-    mhutchie.git-graph eamodio.gitlens \
-    ms-toolsai.jupyter ms-toolsai.jupyter-keymap ms-toolsai.vscode-jupyter-cell-tags ms-toolsai.jupyter-renderers ms-toolsai.vscode-jupyter-slideshow \
-    PKief.material-icon-theme Catppuccin.catppuccin-vsc \
-    cweijan.vscode-mysql-client2 anwar.papyrus-pdf njzy.stats-bar"
+
 ## 用户配置
 COPY code-server/settings.json root/.local/share/code-server/User/settings.json
 
-
-###  设置环境变量，以便在构建过程中使用
-# ENV PLUGIN_LIST=${PLUGIN_LIST}
-# RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" && \
-#     for plugin in $PLUGIN_LIST; do code-server --install-extension $plugin; done
 
 # 安装Oh-My-Zsh和插件
 RUN export http_proxy="http://10.65.230.19:8301" && export https_proxy="http://10.65.230.19:8301" && sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" \
@@ -65,7 +55,7 @@ SHELL ["/bin/zsh", "-c"]
 EXPOSE 8080
 
 # 设置工作目录
-WORKDIR /workspace
+WORKDIR /workspace/dev
 
 # 运行code-server
 ENTRYPOINT ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "password"]

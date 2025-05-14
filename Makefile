@@ -19,3 +19,6 @@ down:
 
 push:
 	sudo docker compose push
+
+logs:
+	sudo docker compose logs -f --tail 500
