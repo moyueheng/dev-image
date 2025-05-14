@@ -7,15 +7,15 @@ all: clean test install run deploy push
 
 build: 
 	bash ./update_tag.sh
-	docker-compose build
+	sudo docker compose build
 
 deploy: 
 	bash ./update_tag.sh
-	docker-compose build
-	docker-compose up -d
+	sudo docker compose build
+	sudo docker compose up -d
 
 down:
-	docker-compose down
+	sudo docker compose down
 
 push:
-	docker-compose push
+	sudo docker compose push

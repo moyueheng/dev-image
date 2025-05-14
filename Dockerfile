@@ -2,13 +2,9 @@
 # 使用官方cuda的Ubuntu作为基础镜像, 这个cuda版本要小于等于nvidia-smi
 FROM docker.io/whatcanyousee/verl:ngc-cu124-vllm0.8.4-sglang0.4.5-mcore0.12.0-te2.2
 
-
-
 # 避免在安装时出现交互式提示
 ARG DEBIAN_FRONTEND=noninteractive
 
-# 复制本地的sources.list文件到容器中
-COPY sources.list /etc/apt/sources.list
 
 # 更新软件包列表，安装依赖
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
@@ -24,12 +20,14 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
+# 修改hosts
+COPY hosts /etc/hosts
+
 # 配置tmux
 COPY .tmux.conf /root/.tmux.conf
 
 # 安装code-server
-RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" \
-    && curl -fsSL https://raw.githubusercontent.com/cdr/code-server/main/install.sh | sh \
+RUN export http_proxy="http://10.65.230.19:8301" && export https_proxy="http://10.65.230.19:8301" && curl -fsSL https://raw.githubusercontent.com/cdr/code-server/main/install.sh | sh \
     && mkdir -p /root/.config/code-server
 
 ## 配置文件
@@ -45,14 +43,12 @@ COPY code-server/settings.json root/.local/share/code-server/User/settings.json
 
 
 ###  设置环境变量，以便在构建过程中使用
-ENV PLUGIN_LIST=${PLUGIN_LIST}
-RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" && \
-    for plugin in $PLUGIN_LIST; do code-server --install-extension $plugin; done
+# ENV PLUGIN_LIST=${PLUGIN_LIST}
+# RUN export http_proxy="http://101.43.1.213:20171" && export https_proxy="http://101.43.1.213:20171" && \
+#     for plugin in $PLUGIN_LIST; do code-server --install-extension $plugin; done
 
 # 安装Oh-My-Zsh和插件
-RUN export http_proxy="http://101.43.1.213:20171" \
-    && export https_proxy="http://101.43.1.213:20171" \
-    && sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" \
+RUN export http_proxy="http://10.65.230.19:8301" && export https_proxy="http://10.65.230.19:8301" && sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" \
     && git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
@@ -64,18 +60,6 @@ RUN chsh -s $(which zsh) \
 
 # 修改默认的 shell 为 zsh
 SHELL ["/bin/zsh", "-c"]
-
-
-# 安装Miniconda, zsh配置完了才能配置conda
-RUN wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.10.0-1-Linux-x86_64.sh -O /tmp/miniconda.sh \
-    && bash /tmp/miniconda.sh -b -p /opt/conda \
-    && rm /tmp/miniconda.sh \
-    && /opt/conda/bin/conda init zsh \
-    && source ~/.zshrc \
-    && pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
-    && pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn \
-    && pip install numpy \
-    && pip install pycuda
 
 # 暴露code-server的端口
 EXPOSE 8080
